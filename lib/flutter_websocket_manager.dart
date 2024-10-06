@@ -1,4 +1,4 @@
-library web_socket_manager;
+library flutter_websocket_manager;
 
 import 'dart:convert';
 import 'dart:developer';
