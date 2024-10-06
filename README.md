@@ -1,6 +1,6 @@
-# WebSocketManager
+# FlutterWebSocketManager
 
-**WebSocketManager** is a simple and flexible Flutter package for managing WebSocket connections. It helps you easily handle WebSocket connections, messages, errors, and connection states in your Flutter applications.
+**FlutterWebSocketManager** is a simple and flexible Flutter package for managing WebSocket connections. It helps you easily handle WebSocket connections, messages, errors, and connection states in your Flutter applications.
 
 ## Features
 
@@ -17,25 +17,111 @@ To install this package, add it to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   flutter_websocket_manager: ^0.0.1
+```
 
+Then run:
+
+```bash
+flutter pub get
+```
+
+## Usage
+
+### Creating a WebSocket Connection
+
+```dart
 import 'package:flutter_websocket_manager/flutter_websocket_manager.dart';
 
 void main() {
-  final wsManager = WebSocketManager("wss://example.com/ws");
+  // Create a WebSocketManager instance with optional headers and query parameters
+  final wsManager = WebSocketManager(
+    "wss://example.com/ws",
+    queryParameters: {
+      'token': '12345',  // You can add query parameters here
+    },
+    headers: {
+      'Authorization': 'Bearer your_access_token',  // You can add custom headers here
+    },
+  );
 
+  // Connect to the WebSocket
   wsManager.connect();
 
-  wsManager.setMessageCallback((message) {
+  // Set a callback for receiving messages
+  wsManager.onMessage((message) {
     print("Received message: $message");
   });
 
-  wsManager.setErrorCallback((error) {
+  // Set a callback for handling errors
+  wsManager.onError((error) {
     print("Error: $error");
   });
 
-  // To send a message
-  wsManager.sendMessage({'type': 'ping'});
+  // To send a text message
+  wsManager.sendMessage("Hello, server!");
+
+  // To send a data message (JSON)
+  wsManager.sendDataMessage({'type': 'ping'});
 
   // To disconnect
   wsManager.disconnect();
 }
+```
+
+### Adding `queryParameters` and `headers`
+
+You can pass `queryParameters` and `headers` when creating the `WebSocketManager` instance:
+
+- **`queryParameters`**: Pass query parameters as a `Map`, which will be added to the WebSocket URL.
+- **`headers`**: Custom headers such as "Authorization" can be added when connecting to the server.
+
+```dart
+final wsManager = WebSocketManager(
+  "wss://example.com/ws",
+  queryParameters: {
+    'orderId': '2631',  // Add query parameters as needed
+  },
+  headers: {
+    'Authorization': 'Bearer your_token_here',  // Add custom headers
+    'Custom-Header': 'CustomValue',
+  },
+);
+```
+
+### Practical Example
+
+```dart
+import 'package:flutter_websocket_manager/flutter_websocket_manager.dart';
+
+void main() {
+  final wsManager = WebSocketManager(
+    "wss://example.com/ws",
+    queryParameters: {'orderId': '2631'}, // Query parameters
+    headers: {'Authorization': 'Bearer token'}, // Custom headers
+  );
+
+  // Connect to the WebSocket
+  wsManager.connect();
+
+  // Listen for messages
+  wsManager.onMessage((message) {
+    print("Received message: $message");
+  });
+
+  // Handle errors
+  wsManager.onError((error) {
+    print("Error: $error");
+  });
+
+  // Send a text message
+  wsManager.sendMessage("Hello WebSocket");
+
+  // Send a data message (JSON)
+  wsManager.sendDataMessage({'action': 'ping'});
+
+  // Disconnect
+  wsManager.disconnect();
+}
+```
+
+---
