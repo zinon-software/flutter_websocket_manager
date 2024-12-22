@@ -29,11 +29,11 @@ class FlutterWebSocketManager {
   // Callback function to handle errors during WebSocket communication
   Function(dynamic)? _errorCallback;
 
-  /// Constructor to initialize the WebSocketManager with a WebSocket [url],
+  /// Constructor to initialize the FlutterWebSocketManager with a WebSocket [url],
   /// optional [headers] and optional [queryParameters].
   FlutterWebSocketManager(this.url, {this.headers, this.queryParameters}) {
-    _state =
-        SocketConnectionState.none; // Default state is none (not connected)
+    // Default state is none (not connected)
+    _state = SocketConnectionState.none;
   }
 
   /// Connects to the WebSocket server and listens for incoming messages.

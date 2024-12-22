@@ -9,61 +9,61 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 class MockWebSocketChannel extends Mock implements WebSocketChannel {}
 
 void main() {
-  late FlutterWebSocketManager webSocketManager;
+  late FlutterWebSocketManager flutterWebSocketManager;
   late MockWebSocketChannel mockChannel;
 
   setUp(() {
-    // Initialize the WebSocketManager with a mock channel
+    // Initialize the FlutterWebSocketManager with a mock channel
     mockChannel = MockWebSocketChannel();
-    webSocketManager = FlutterWebSocketManager(
+    flutterWebSocketManager = FlutterWebSocketManager(
       'wss://example.com/ws',
       headers: {'Authorization': 'Bearer test_token'},
       queryParameters: {'test': '123'},
     );
   });
 
-  test('WebSocketManager connects successfully', () async {
+  test('FlutterWebSocketManager connects successfully', () async {
     // Simulate a successful connection
-    webSocketManager.connect();
+    flutterWebSocketManager.connect();
 
     // Check that the state is set to connected
-    expect(webSocketManager.state, equals(SocketConnectionState.connected));
+    expect(flutterWebSocketManager.state, equals(SocketConnectionState.connected));
   });
 
-  test('WebSocketManager sends a message successfully', () {
+  test('FlutterWebSocketManager sends a message successfully', () {
     final message = {'type': 'ping'};
 
     // Call sendMessage and verify that the message is sent
-    webSocketManager.sendDataMessage(message);
+    flutterWebSocketManager.sendDataMessage(message);
     verify(mockChannel.sink.add(jsonEncode(message))).called(1);
   });
 
-  test('WebSocketManager receives a message and triggers callback', () {
+  test('FlutterWebSocketManager receives a message and triggers callback', () {
     const message = 'Test Message';
     bool messageReceived = false;
 
     // Set a callback to check if a message is received
-    webSocketManager.onMessage((receivedMessage) {
+    flutterWebSocketManager.onMessage((receivedMessage) {
       messageReceived = true;
       expect(receivedMessage, message);
     });
 
     // Simulate receiving a message
-    webSocketManager.connect();
+    flutterWebSocketManager.connect();
     mockChannel.stream.listen((_) {
-      webSocketManager.sendMessage(message);
+      flutterWebSocketManager.sendMessage(message);
     });
 
     // Check if the callback was triggered
     expect(messageReceived, true);
   });
 
-  test('WebSocketManager handles error and triggers error callback', () {
-    final error = 'Test Error';
+  test('FlutterWebSocketManager handles error and triggers error callback', () {
+    const error = 'Test Error';
     bool errorTriggered = false;
 
     // Set an error callback
-    webSocketManager.onError((receivedError) {
+    flutterWebSocketManager.onError((receivedError) {
       errorTriggered = true;
       expect(receivedError, error);
     });
@@ -75,11 +75,11 @@ void main() {
     expect(errorTriggered, true);
   });
 
-  test('WebSocketManager disconnects successfully', () {
-    webSocketManager.connect();
-    webSocketManager.disconnect();
+  test('FlutterWebSocketManager disconnects successfully', () {
+    flutterWebSocketManager.connect();
+    flutterWebSocketManager.disconnect();
 
     // Check that the state is set to disconnected
-    expect(webSocketManager.state, equals(SocketConnectionState.disconnected));
+    expect(flutterWebSocketManager.state, equals(SocketConnectionState.disconnected));
   });
 }

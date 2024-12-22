@@ -33,8 +33,8 @@ flutter pub get
 import 'package:flutter_websocket_manager/flutter_websocket_manager.dart';
 
 void main() {
-  // Create a WebSocketManager instance with optional headers and query parameters
-  final wsManager = WebSocketManager(
+  // Create a FlutterWebSocketManager instance with optional headers and query parameters
+  final wsManager = FlutterWebSocketManager(
     "wss://example.com/ws",
     queryParameters: {
       'token': '12345',  // You can add query parameters here
@@ -63,6 +63,19 @@ void main() {
   // To send a data message (JSON)
   wsManager.sendDataMessage({'type': 'ping'});
 
+  // To get the current connection state
+  switch (wsManager.state) {
+    case SocketConnectionState.connected:
+      print("WebSocket is connected.");
+      break;
+    case SocketConnectionState.disconnected:
+      print("WebSocket is disconnected.");
+      break;
+    case SocketConnectionState.none:
+      print("WebSocket connection state is none.");
+      break;
+  }
+
   // To disconnect
   wsManager.disconnect();
 }
@@ -70,13 +83,13 @@ void main() {
 
 ### Adding `queryParameters` and `headers`
 
-You can pass `queryParameters` and `headers` when creating the `WebSocketManager` instance:
+You can pass `queryParameters` and `headers` when creating the `FlutterWebSocketManager` instance:
 
 - **`queryParameters`**: Pass query parameters as a `Map`, which will be added to the WebSocket URL.
 - **`headers`**: Custom headers such as "Authorization" can be added when connecting to the server.
 
 ```dart
-final wsManager = WebSocketManager(
+final wsManager = FlutterWebSocketManager(
   "wss://example.com/ws",
   queryParameters: {
     'orderId': '2631',  // Add query parameters as needed
@@ -94,7 +107,7 @@ final wsManager = WebSocketManager(
 import 'package:flutter_websocket_manager/flutter_websocket_manager.dart';
 
 void main() {
-  final wsManager = WebSocketManager(
+  final wsManager = FlutterWebSocketManager(
     "wss://example.com/ws",
     queryParameters: {'orderId': '2631'}, // Query parameters
     headers: {'Authorization': 'Bearer token'}, // Custom headers
