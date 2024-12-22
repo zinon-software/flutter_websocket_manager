@@ -4,7 +4,7 @@
 
 
 
-## 0.2.1
+## 1.0.0
 
 - Added platform detection to support both web and mobile platforms.
 - Improved error handling and connection management.
