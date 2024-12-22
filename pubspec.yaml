@@ -8,7 +8,7 @@ homepage: https://github.com/zinon-software/flutter_websocket_manager
 repository: https://github.com/zinon-software/flutter_websocket_manager
 
 environment:
-  sdk: '>=3.4.4 <4.0.0'
+  sdk: ^3.5.4
   flutter: ">=1.17.0"
 
 dependencies:
